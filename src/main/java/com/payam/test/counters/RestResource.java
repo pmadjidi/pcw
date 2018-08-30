@@ -33,7 +33,7 @@ public class RestResource {
             result =  counters.get(key).toString();
             return "{" + key + ":" + result + "}";
         }  catch (NullPointerException e) {
-            return "Key missing....";
+            return "{" + key + ":missing" + "}";
         } catch (Exception e) {
             e.printStackTrace();
             return "Error..";
@@ -49,7 +49,7 @@ public class RestResource {
             result =  counters.inc(key).toString();
             return "{" + key + ":" + result + "}";
         } catch (NullPointerException e) {
-            return "Key missing....";
+            return "{" + key + ":missing" + "}";
         } catch (Exception e) {
             e.printStackTrace();
             return "Error..";
