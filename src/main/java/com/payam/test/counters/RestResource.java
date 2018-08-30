@@ -1,6 +1,8 @@
 package com.payam.test.counters;
 
 import com.google.gson.Gson;
+import org.codehaus.jettison.json.JSONObject;
+
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

@@ -24,7 +24,11 @@ public class APITest {
         // Get XML
         String respAdd = target.path("payam").path("add").request()
                 .accept(MediaType.APPLICATION_JSON).get(String.class);
+        String respAddAgain = target.path("payam").path("add").request()
+                .accept(MediaType.APPLICATION_JSON).get(String.class);
         String respInc = target.path("payam").path("inc").request()
+                .accept(MediaType.APPLICATION_JSON).get(String.class);
+        String respAddTwice = target.path("payam").path("add").request()
                 .accept(MediaType.APPLICATION_JSON).get(String.class);
         String respGet = target.path("payam").path("get").request()
                 .accept(MediaType.APPLICATION_JSON).get(String.class);
@@ -39,8 +43,19 @@ public class APITest {
         String respListAgain = target.path("list").request()
                 .accept(MediaType.APPLICATION_JSON).get(String.class);
 
+        try {
+            String respAddUnEscaped = target.path("a/bcd").path("add").request()
+                    .accept(MediaType.APPLICATION_JSON).get(String.class);
+        } catch (Exception e) {
+            if (e.getClass().getCanonicalName() == "javax.ws.rs.NotFoundException") {
+                System.out.print("Should fail with: " + "javax.ws.rs.NotFoundException\n" );
+            }
+        }
+
         System.out.println(respAdd);
+        System.out.println(respAddAgain);
         System.out.println(respInc);
+        System.out.println(respAddTwice);
         System.out.println(respGet);
         System.out.println(respMissingGet);
         System.out.println(respMissingInc);
