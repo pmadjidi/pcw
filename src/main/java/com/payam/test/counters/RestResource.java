@@ -16,10 +16,10 @@ public class RestResource {
         String result;
         try {
             result =  counters.add(key).toString();
-            return "{" + key + ":" + result + "}";
+            return "{status: OK," + key + ":" + result + "}";
         } catch (Exception e) {
             e.printStackTrace();
-            return "{" + key + ":ERROR" + "}";
+            return "{status: ERROR,key:" + key + "}";
         }
     }
 
@@ -31,12 +31,12 @@ public class RestResource {
         String result;
         try {
             result =  counters.get(key).toString();
-            return "{" + key + ":" + result + "}";
+            return "{status: OK," + key + ":" + result + "}";
         }  catch (NullPointerException e) {
-            return "{" + key + ":missing" + "}";
+            return "{status: KEYMISSING,key:" + key + "}";
         } catch (Exception e) {
             e.printStackTrace();
-            return "{" + key + ":ERROR" + "}";
+            return "{type: ERROR:" + "key:" + key + "}";
         }
     }
 
@@ -47,12 +47,12 @@ public class RestResource {
         String result;
         try {
             result =  counters.inc(key).toString();
-            return "{" + key + ":" + result + "}";
+            return "{status: OK," + key + ":" + result + "}";
         } catch (NullPointerException e) {
-            return "{" + key + ":missing" + "}";
+            return "{status: KEYMISSING,key:" + key + "}";
         } catch (Exception e) {
             e.printStackTrace();
-            return "{" + key + ":ERROR" + "}";
+            return "{status: ERROR,key:" + key + "}";
         }
     }
 
@@ -63,10 +63,10 @@ public class RestResource {
         String result;
         try {
             result =  new Gson().toJson(counters.scan());
-              return "{" + "list" + ":" + result + "}";
+              return "{status: OK," + "list:" + result + "}";
         } catch (Exception e) {
             e.printStackTrace();
-            return "{" + "list" + ":ERROR" + "}";
+            return "{status: LISTERROR}";
         }
     }
 }
