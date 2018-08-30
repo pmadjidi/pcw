@@ -8,9 +8,9 @@ import java.util.concurrent.TimeUnit;
 public class ConcurrencyTest {
 
     public final static int THREAD_POOL_SIZE = 100;
-    public final static int NUMBEROFITTERATION = 100;
+    public final static int NUMBEROFITTERATIONS = 100;
     public final static int NUMBEROFKEYS = 500;
-    public final static int NUMBEROFITTERATIONS = NUMBEROFKEYS * 100 ;
+    public final static int TRAILS = NUMBEROFKEYS * 100 ;
 
     public static NamedCounters nc = null;
 
@@ -22,7 +22,7 @@ public class ConcurrencyTest {
     }
 
     public static boolean performTest(final NamedCounters counters) throws InterruptedException {
-        for (int i = 0; i < NUMBEROFITTERATION; i++) {
+        for (int i = 0; i < NUMBEROFITTERATIONS; i++) {
             ExecutorService execServer = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
             for (int j = 0; j < THREAD_POOL_SIZE; j++) {
                 execServer.execute(new Runnable() {
@@ -34,7 +34,7 @@ public class ConcurrencyTest {
                             Integer oneMoreCounter = counters.add(String.valueOf(i));
                         }
 
-                        for (int i = 1; i < NUMBEROFITTERATIONS; i++) {
+                        for (int i = 1; i < TRAILS; i++) {
                             String  oneCounter = String.valueOf( i % NUMBEROFKEYS );
                             Integer readBefore = counters.get(oneCounter);
                             if (readBefore == null) {
@@ -55,7 +55,7 @@ public class ConcurrencyTest {
 
         }
 
-        Integer expect = (NUMBEROFITTERATIONS / NUMBEROFKEYS) *  NUMBEROFITTERATION * THREAD_POOL_SIZE;
+        Integer expect = (TRAILS / NUMBEROFKEYS) *  NUMBEROFITTERATIONS * THREAD_POOL_SIZE;
         counters.printCounters();
         boolean failed = false;
         for (Map.Entry<String, Integer> entry : counters.scanI().entrySet()) {
