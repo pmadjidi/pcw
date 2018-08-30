@@ -33,7 +33,7 @@ public class Test {
                 .accept(MediaType.APPLICATION_JSON).get(String.class);
         String respListAgain = target.path("list").request()
                 .accept(MediaType.APPLICATION_JSON).get(String.class);
-        
+
         System.out.println(respAdd);
         System.out.println(respInc);
         System.out.println(respGet);
