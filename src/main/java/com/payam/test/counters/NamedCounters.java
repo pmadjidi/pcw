@@ -1,12 +1,13 @@
 package com.payam.test.counters;
 
 import javax.inject.Singleton;
+import java.net.Inet4Address;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Singleton
-class NamedCounters {
+public class NamedCounters {
     private static ConcurrentHashMap<String, Integer> concurrentHashMapCounters = null;
 
     public NamedCounters() {
@@ -36,6 +37,13 @@ class NamedCounters {
         concurrentHashMapCounters.forEach((k, v) -> snapShot.put(k, v.toString()));
         return snapShot;
     }
+
+    public Map<String, Integer> scanI() {
+        Map<String, Integer> snapShot = new HashMap<String, Integer>();
+        concurrentHashMapCounters.forEach((k, v) -> snapShot.put(k, v));
+        return snapShot;
+    }
+
 
     public void printCounters() {
         scan().forEach((k, v) -> System.out.print("Key: " + k + " Value:" + v + "\n"));

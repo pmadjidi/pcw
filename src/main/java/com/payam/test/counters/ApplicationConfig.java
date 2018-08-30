@@ -7,3 +7,4 @@ public class ApplicationConfig  extends ResourceConfig {
         packages(true, "com.payam.test.counters");
     }
 }
+

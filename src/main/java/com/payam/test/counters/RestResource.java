@@ -11,7 +11,7 @@ import java.util.Map;
 @Path("/api/counters")
 @Produces(MediaType.APPLICATION_JSON)
 public class RestResource {
-    
+
     @Inject
     public NamedCounters counters;
 

@@ -1,5 +1,8 @@
 
 import java.net.URI;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -7,9 +10,11 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
+
+import com.payam.test.counters.NamedCounters;
 import org.glassfish.jersey.client.ClientConfig;
 
-public class Test {
+public class APITest {
 
     public static void main(String[] args) {
         ClientConfig config = new ClientConfig();
@@ -50,3 +55,4 @@ public class Test {
     }
 
 }
+
