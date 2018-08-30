@@ -19,7 +19,7 @@ public class RestResource {
             return "{" + key + ":" + result + "}";
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error..";
+            return "{" + key + ":ERROR" + "}";
         }
     }
 
@@ -36,7 +36,7 @@ public class RestResource {
             return "{" + key + ":missing" + "}";
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error..";
+            return "{" + key + ":ERROR" + "}";
         }
     }
 
@@ -52,7 +52,7 @@ public class RestResource {
             return "{" + key + ":missing" + "}";
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error..";
+            return "{" + key + ":ERROR" + "}";
         }
     }
 
@@ -63,10 +63,10 @@ public class RestResource {
         String result;
         try {
             result =  new Gson().toJson(counters.scan());
-            return result;
+              return "{" + "list" + ":" + result + "}";
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error..";
+            return "{" + "list" + ":ERROR" + "}";
         }
     }
 }
