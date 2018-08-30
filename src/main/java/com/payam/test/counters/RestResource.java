@@ -4,69 +4,84 @@ import com.google.gson.Gson;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.HashMap;
+import java.util.Map;
 
 @Path("/api/counters")
 public class RestResource {
     // to do depencecy injection ....
     private static NamedCounters counters = new NamedCounters();
+
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/{key}/add")
-    public String add(@PathParam("key") String key) {
-        String result;
+    public Response addJSON(@PathParam("key") String key) {
+        String val;
+        Map<String, String> result = new HashMap<>();
         try {
-            result =  counters.add(key).toString();
-            return "{status:OK," + key + ":" + result + "}";
+            val =  counters.add(key).toString();
+            result.put(key, val);
+            return Response.status(Response.Status.OK).entity(result).build();
         } catch (Exception e) {
             e.printStackTrace();
-            return "{status:ERROR,key:" + key + "}";
+           return  Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
+
+
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/{key}/get")
-    public String get(@PathParam("key") String key) {
-
-        String result;
+    public Response getJSON(@PathParam("key") String key) {
+        String val;
+        Map<String, String> result = new HashMap<>();
         try {
-            result =  counters.get(key).toString();
-            return "{status:OK," + key + ":" + result + "}";
-        }  catch (NullPointerException e) {
-            return "{status:MISSINGKEY,key:" + key + "}";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "{status:ERROR,key:" + key + "}";
-        }
-    }
-
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    @Path("/{key}/inc")
-    public String inc(@PathParam("key") String key) {
-        String result;
-        try {
-            result =  counters.inc(key).toString();
-            return "{status:OK," + key + ":" + result + "}";
+            val =  counters.get(key).toString();
+            result.put(key, val);
+            return Response.status(Response.Status.OK).entity(result).build();
         } catch (NullPointerException e) {
-            return "{status:MISSINGKEY,key:" + key + "}";
+            result.put("KEYMISSING", key);
+           return  Response.status(Response.Status.OK).entity(result).build();
         } catch (Exception e) {
             e.printStackTrace();
-            return "{status:ERROR,key:" + key + "}";
+            return  Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
+
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    @Path("/list")
-    public String list() {
-        String result;
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{key}/inc")
+    public Response incJSON(@PathParam("key") String key) {
+        String val;
+        Map<String, String> result = new HashMap<>();
         try {
-            result =  new Gson().toJson(counters.scan());
-              return "{status:OK," + "list:" + result + "}";
+            val =  counters.inc(key).toString();
+            result.put(key, val);
+            return Response.status(Response.Status.OK).entity(result).build();
+        } catch (NullPointerException e) {
+            result.put("KEYMISSING", key);
+           return  Response.status(Response.Status.OK).entity(result).build();
         } catch (Exception e) {
             e.printStackTrace();
-            return "{status:ERROR,list: {}}";
+            return  Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
+    @GET
+    @Path("/list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public  Response listJSON() {
+        Map<String, String> result;
+        try {
+            result = counters.scan();
+            return Response.status(Response.Status.OK).entity(result).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

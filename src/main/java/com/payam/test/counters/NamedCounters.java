@@ -30,9 +30,9 @@ class NamedCounters {
 
     //List operations, safe but does not mirror possible modifications from other threads
     // does not throw modification execptions ....
-    public Map<String, Integer> scan() {
-        Map<String, Integer> snapShot = new HashMap<String, Integer>();
-        concurrentHashMapCounters.forEach((k, v) -> snapShot.put(k, v));
+    public Map<String, String> scan() {
+        Map<String, String> snapShot = new HashMap<String, String>();
+        concurrentHashMapCounters.forEach((k, v) -> snapShot.put(k, v.toString()));
         return snapShot;
     }
 
