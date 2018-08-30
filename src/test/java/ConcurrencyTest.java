@@ -10,7 +10,7 @@ public class ConcurrencyTest {
     public final static int THREAD_POOL_SIZE = 100;
     public final static int NUMBEROFITTERATION = 100;
     public final static int NUMBEROFKEYS = 500;
-    public final static int NUMBEROFITTERATIONS = 50000;
+    public final static int NUMBEROFITTERATIONS = NUMBEROFKEYS * 100 ;
 
     public static NamedCounters nc = null;
 
@@ -21,7 +21,7 @@ public class ConcurrencyTest {
         performTest(nc);
     }
 
-    public static void performTest(final NamedCounters counters) throws InterruptedException {
+    public static boolean performTest(final NamedCounters counters) throws InterruptedException {
         for (int i = 0; i < NUMBEROFITTERATION; i++) {
             ExecutorService execServer = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
             for (int j = 0; j < THREAD_POOL_SIZE; j++) {
@@ -66,9 +66,11 @@ public class ConcurrencyTest {
         }
         if (failed) {
             System.out.println("FAILED");
+            return false;
         }
         else {
             System.out.println("SUCCESS");
+            return true;
         }
     }
 }
