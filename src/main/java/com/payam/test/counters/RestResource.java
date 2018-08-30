@@ -1,7 +1,7 @@
 package com.payam.test.counters;
 
 import com.google.gson.Gson;
-
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -9,9 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Path("/api/counters")
+@Produces(MediaType.APPLICATION_JSON)
 public class RestResource {
     // to do depencecy injection ....
-    private static NamedCounters counters = new NamedCounters();
+    //private static NamedCounters counters = new NamedCounters();
+
+    @Inject
+    public NamedCounters counters;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

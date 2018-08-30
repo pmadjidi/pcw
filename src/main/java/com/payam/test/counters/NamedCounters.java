@@ -1,10 +1,11 @@
 package com.payam.test.counters;
 
+import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
+@Singleton
 class NamedCounters {
     private static ConcurrentHashMap<String, Integer> concurrentHashMapCounters = null;
 
