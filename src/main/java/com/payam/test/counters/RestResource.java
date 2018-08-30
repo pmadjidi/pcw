@@ -11,9 +11,7 @@ import java.util.Map;
 @Path("/api/counters")
 @Produces(MediaType.APPLICATION_JSON)
 public class RestResource {
-    // to do depencecy injection ....
-    //private static NamedCounters counters = new NamedCounters();
-
+    
     @Inject
     public NamedCounters counters;
 
