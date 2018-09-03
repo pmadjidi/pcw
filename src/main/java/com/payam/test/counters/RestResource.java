@@ -24,6 +24,10 @@ public class RestResource {
         String val;
         Map<String, String> result = new HashMap<>();
         try {
+            val =  counters.get(key).toString();
+            result.put(key, val);
+            return Response.status(409).entity(result).build();
+        } catch (NullPointerException e) {
             val =  counters.add(key).toString();
             result.put(key, val);
             return Response.status(Response.Status.CREATED).entity(result).build();
