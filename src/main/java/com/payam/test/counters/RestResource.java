@@ -26,7 +26,7 @@ public class RestResource {
         try {
             val =  counters.add(key).toString();
             result.put(key, val);
-            return Response.status(Response.Status.OK).entity(result).build();
+            return Response.status(Response.Status.CREATED).entity(result).build();
         } catch (Exception e) {
             e.printStackTrace();
            return  Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
@@ -46,8 +46,7 @@ public class RestResource {
             result.put(key, val);
             return Response.status(Response.Status.OK).entity(result).build();
         } catch (NullPointerException e) {
-            result.put("KEYMISSING", key);
-           return  Response.status(Response.Status.OK).entity(result).build();
+           return  Response.status(Response.Status.NOT_FOUND).entity(result).build();
         } catch (Exception e) {
             e.printStackTrace();
             return  Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
@@ -66,8 +65,7 @@ public class RestResource {
             result.put(key, val);
             return Response.status(Response.Status.OK).entity(result).build();
         } catch (NullPointerException e) {
-            result.put("KEYMISSING", key);
-           return  Response.status(Response.Status.OK).entity(result).build();
+           return  Response.status(Response.Status.NOT_FOUND).entity(result).build();
         } catch (Exception e) {
             e.printStackTrace();
             return  Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
