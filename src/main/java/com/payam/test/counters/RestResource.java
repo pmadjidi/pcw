@@ -21,6 +21,7 @@ public class RestResource {
     public NamedCounters counters;
 
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{key}/add")
     public Response addJSON(@PathParam("key") String key) {

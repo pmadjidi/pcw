@@ -11,12 +11,14 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
-
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.payam.test.counters.NamedCounters;
 import org.glassfish.jersey.client.ClientConfig;
 
 public class APITest {
 
+    @Test
     public static void main(String[] args) {
         ClientConfig config = new ClientConfig();
         Client client = ClientBuilder.newClient(config);
@@ -24,66 +26,52 @@ public class APITest {
         WebTarget target = client.target(getBaseURI());
 
         Response respAdd =  target.path("payam").path("add").request(MediaType.APPLICATION_JSON).post(Entity.json(null));
+        System.out.println(respAdd.toString());
+        assertEquals(201, respAdd.getStatus(), "must be 201");
 
-        System.out.println(respAdd.getStatus());
-
-        try {
-            Response respAddAgain = target.path("payam").path("add").request(MediaType.APPLICATION_JSON).post(Entity.json(null));
-        } catch (Exception e) {
-            System.out.print("Got" + e.getMessage() + "\n");
-            System.out.print("Should fail with: " + "HTTP 409 Conflict\n");
-        }
+        Response respAddAgain = target.path("payam").path("add").request(MediaType.APPLICATION_JSON).post(Entity.json(null));
+        System.out.println(respAddAgain.toString());
+        assertEquals(409, respAddAgain.getStatus(), "must be 409");
 
         Response respInc = target.path("payam").path("inc").request(MediaType.APPLICATION_JSON).post(Entity.json(null));
+        System.out.println(respInc.toString());
+        assertEquals(200, respInc.getStatus(), "must be 200");
 
-        System.out.println(respInc.getStatus());
+        Response respAddTwice = target.path("payam").path("add").request(MediaType.APPLICATION_JSON).post(Entity.json(null));
+        System.out.println(respAddTwice.toString());
+        assertEquals(409, respAddTwice.getStatus(), "must be 409");
 
-        try {
-            Response respAddTwice = target.path("payam").path("add").request(MediaType.APPLICATION_JSON).post(Entity.json(null));
-        } catch (Exception e) {
-            System.out.print("Got" + e.getMessage() + "\n");
-            System.out.print("Should fail with: " + "HTTP 409 Conflict\n");
-        }
 
-        String respGet = target.path("payam").path("get").request()
-                .accept(MediaType.APPLICATION_JSON).get(String.class);
-        System.out.println(respGet);
+        Response respGet = target.path("payam").path("get").request(MediaType.APPLICATION_JSON).get();
+        System.out.println(respGet.toString());
+        assertEquals(200, respGet.getStatus(), "must be 200");
 
-        try {
-            String respMissingGet = target.path("does not exist").path("get").request()
-                    .accept(MediaType.APPLICATION_JSON).get(String.class);
-        } catch (Exception e) {
-            System.out.print("Got" + e.getMessage() + "\n");
-            System.out.print("Should fail with: " + "HTTP 404 Not Found\n");
-        }
+        Response respMissingGet = target.path("does not exist").path("get").request(MediaType.APPLICATION_JSON).get();
+        System.out.println(respMissingGet.toString());
+        assertEquals(404, respMissingGet.getStatus(), "must be 404");
 
-        try {
-            String respMissingInc = target.path("does not exist").path("inc").request()
-                    .accept(MediaType.APPLICATION_JSON).get(String.class);
-        } catch (Exception e) {
-            System.out.print("Got" + e.getMessage() + "\n");
-            System.out.print("Should fail with: " + "HTTP 404 Not Found\n");
-        }
+        Response respMissingInc = target.path("does not exist").path("inc").request(MediaType.APPLICATION_JSON).post(Entity.json(null));
+        System.out.println(respMissingInc.toString());
+        assertEquals(404, respMissingInc.getStatus(), "must be 404");
 
-        String respList = target.path("list").request()
-                .accept(MediaType.APPLICATION_JSON).get(String.class);
-        System.out.println(respList);
+        Response respList = target.path("list").request(MediaType.APPLICATION_JSON).get();
+        System.out.println(respList.toString());
+        assertEquals(200, respList.getStatus(), "must be 200");
+
 
         Response respAddOneMore = target.path("Apsis").path("add").request(MediaType.APPLICATION_JSON).post(Entity.json(null));
-        System.out.println(respAddOneMore.getStatus());
+        System.out.println(respAddOneMore.toString());
+        assertEquals(201, respAddOneMore.getStatus(), "must be 200");
 
-        String respListAgain = target.path("list").request()
-                .accept(MediaType.APPLICATION_JSON).get(String.class);
-        System.out.println(respListAgain);
+        Response respListAgain = target.path("list").request(MediaType.APPLICATION_JSON).get();
+        System.out.println(respListAgain.toString());
+        assertEquals(200, respList.getStatus(), "must be 200");
 
-        try {
-            String respAddUnEscaped = target.path("a/bcd").path("add").request()
-                    .accept(MediaType.APPLICATION_JSON).get(String.class);
-        } catch (Exception e) {
-            System.out.print("Got" + e.getMessage() + "\n");
-            System.out.print("Should fail with: " + "javax.ws.rs.NotFoundException\n" );
 
-        }
+
+        Response respAddUnEscaped = target.path("a/bcd").path("add").request(MediaType.APPLICATION_JSON).post(Entity.json(null));
+        System.out.println(respAddUnEscaped.toString());
+        assertEquals(404, respAddUnEscaped.getStatus(), "must be 404");
     }
 
     private static URI getBaseURI() {

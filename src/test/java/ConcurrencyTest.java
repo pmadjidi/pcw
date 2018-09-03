@@ -4,13 +4,15 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.payam.test.counters.NamedCounters;
 
 public class ConcurrencyTest {
 
     public final static int THREAD_POOL_SIZE = 100;
     public final static int NUMBEROFITTERATIONS = 100;
     public final static int NUMBEROFKEYS = 500;
-    public final static int TRAILS = NUMBEROFKEYS * 100 ;
+    public final static int TRAILS = NUMBEROFKEYS * 100;
 
     public static NamedCounters nc = null;
 
@@ -19,9 +21,10 @@ public class ConcurrencyTest {
         nc.printCounters();
         System.out.print("Now testing....");
         performTest(nc);
+        System.out.print("Success....");
     }
 
-    public static boolean performTest(final NamedCounters counters) throws InterruptedException {
+    public static void performTest(final NamedCounters counters) throws InterruptedException {
         for (int i = 0; i < NUMBEROFITTERATIONS; i++) {
             ExecutorService execServer = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
             for (int j = 0; j < THREAD_POOL_SIZE; j++) {
@@ -35,7 +38,7 @@ public class ConcurrencyTest {
                         }
 
                         for (int i = 1; i < TRAILS; i++) {
-                            String  oneCounter = String.valueOf( i % NUMBEROFKEYS );
+                            String oneCounter = String.valueOf(i % NUMBEROFKEYS);
                             Integer readBefore = counters.get(oneCounter);
                             if (readBefore == null) {
                                 continue;
@@ -55,23 +58,12 @@ public class ConcurrencyTest {
 
         }
 
-        Integer expect = (TRAILS / NUMBEROFKEYS) *  NUMBEROFITTERATIONS * THREAD_POOL_SIZE;
-        counters.printCounters();
-        boolean failed = false;
+        int expect = (TRAILS / NUMBEROFKEYS) * NUMBEROFITTERATIONS * THREAD_POOL_SIZE;
         for (Map.Entry<String, Integer> entry : counters.scanI().entrySet()) {
-            if (entry.getValue().intValue() != expect ) {
-                failed = true ;
-                System.out.println("FAILED:" + entry.getKey() + " = " + entry.getValue() + ":" +  expect.toString());
-            }
-        }
-        if (failed) {
-            System.out.println("FAILED");
-            return false;
-        }
-        else {
-            System.out.println("SUCCESS");
-            return true;
+            int val = entry.getValue().intValue();
+            assertEquals(expect, val, "must be: " + expect + "\n");
         }
     }
 }
+
 
