@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -22,25 +23,23 @@ public class APITest {
 
         WebTarget target = client.target(getBaseURI());
 
-        String respAdd = target.path("payam").path("add").request()
-                .accept(MediaType.APPLICATION_JSON).get(String.class);
-        System.out.println(respAdd);
+        Response respAdd =  target.path("payam").path("add").request(MediaType.APPLICATION_JSON).post(Entity.json(null));
+
+        System.out.println(respAdd.getStatus());
 
         try {
-            String respAddAgain = target.path("payam").path("add").request()
-                    .accept(MediaType.APPLICATION_JSON).get(String.class);
+            Response respAddAgain = target.path("payam").path("add").request(MediaType.APPLICATION_JSON).post(Entity.json(null));
         } catch (Exception e) {
             System.out.print("Got" + e.getMessage() + "\n");
             System.out.print("Should fail with: " + "HTTP 409 Conflict\n");
         }
 
-        String respInc = target.path("payam").path("inc").request()
-                .accept(MediaType.APPLICATION_JSON).get(String.class);
-        System.out.println(respInc);
+        Response respInc = target.path("payam").path("inc").request(MediaType.APPLICATION_JSON).post(Entity.json(null));
+
+        System.out.println(respInc.getStatus());
 
         try {
-            String respAddTwice = target.path("payam").path("add").request()
-                    .accept(MediaType.APPLICATION_JSON).get(String.class);
+            Response respAddTwice = target.path("payam").path("add").request(MediaType.APPLICATION_JSON).post(Entity.json(null));
         } catch (Exception e) {
             System.out.print("Got" + e.getMessage() + "\n");
             System.out.print("Should fail with: " + "HTTP 409 Conflict\n");
@@ -70,9 +69,8 @@ public class APITest {
                 .accept(MediaType.APPLICATION_JSON).get(String.class);
         System.out.println(respList);
 
-        String respAddOneMore = target.path("Apsis").path("add").request()
-                .accept(MediaType.APPLICATION_JSON).get(String.class);
-        System.out.println(respAddOneMore);
+        Response respAddOneMore = target.path("Apsis").path("add").request(MediaType.APPLICATION_JSON).post(Entity.json(null));
+        System.out.println(respAddOneMore.getStatus());
 
         String respListAgain = target.path("list").request()
                 .accept(MediaType.APPLICATION_JSON).get(String.class);

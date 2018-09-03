@@ -10,6 +10,9 @@ import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
+
 @Path("/api/counters")
 @Produces(MediaType.APPLICATION_JSON)
 public class RestResource {
@@ -17,7 +20,7 @@ public class RestResource {
     @Inject
     public NamedCounters counters;
 
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{key}/add")
     public Response addJSON(@PathParam("key") String key) {
@@ -58,7 +61,8 @@ public class RestResource {
     }
 
 
-    @GET
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{key}/inc")
     public Response incJSON(@PathParam("key") String key) {
